@@ -199,7 +199,7 @@ resource "aws_instance" "DockerInstance" {
  }
 
 resource "local_file" "ans-inventory" {
-  filename = "C:\\temp\\demo\\new-sandpit\\hosts"
+  filename = "C:\\repos\\ownrepo\\myterraformlab\\hosts"
   content  = <<EOF
 [ad-root]
 ${aws_instance.ad-root.private_ip}
@@ -233,7 +233,7 @@ EOF
 
 
 resource "local_file" "excel-inv" {
-  filename = "C:\\temp\\demo\\new-sandpit\\excel-inv.csv"
+  filename = "C:\\repos\\ownrepo\\myterraformlab\\excel-inv.csv"
   content  = <<EOF
 ad-root,${aws_instance.ad-root.private_ip}
 
