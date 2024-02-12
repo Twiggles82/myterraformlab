@@ -180,11 +180,11 @@ data "aws_ami" "ubuntufilter" {
 
 filter {
        name   = "name"
-       values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-20220411*"]
+       values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-20231207"]
        }
 }
 
-resource "aws_instance" "DockerInstance" {
+resource "aws_instance" "myUbuntu2" {
    instance_type = "t3.medium"
      ami = "${data.aws_ami.ubuntufilter.id}"
      subnet_id = "${aws_subnet.sub-prod-azA-pub.id}"
@@ -193,8 +193,8 @@ resource "aws_instance" "DockerInstance" {
      vpc_security_group_ids = ["${aws_security_group.home-sg.id}", "${aws_security_group.external-sg.id}"] 
      
          tags = {
-         Name = "DockerInstance"
-         DeviceId = "DockerInstance"
+         Name = "myUbuntu2"
+         DeviceId = "myUbuntu2"
      }
  }
 
