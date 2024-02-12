@@ -30,6 +30,11 @@ function Disable-UserAccessControl {
     Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000 -Force   
 }
 
+# Disable Windows firewall for all profiles
+function DisableWindowsFirewall {
+    Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+}
+
 function Rename-instance {
 
     $instanceId = ( Invoke-WebRequest -Uri http://169.254.169.254/latest/meta-data/instance-id -UseBasicParsing ).Content 
@@ -141,6 +146,8 @@ function Local-Admin
 # Disable-InternetExplorerESC
 
 Disable-UserAccessControl
+
+DisableWindowsFirewall
 
 Rename-instance
 

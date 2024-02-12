@@ -1,18 +1,18 @@
-ad-root,10.180.25.36
+ad-root,10.180.25.25
 
-ad-comp,10.180.25.65
+ad-comp,10.180.25.70
 
-ad-user,10.180.25.90
+ad-user,10.180.25.100
 
-ca-comp,10.180.25.116
+ca-comp,10.180.25.76
 
-ca-user,10.180.25.76
+ca-user,10.180.25.52
 
-ocsp-comp,10.180.25.123
+ocsp-comp,10.180.25.110
 
-ocsp-user,10.180.25.22
+ocsp-user,10.180.25.61
 
-comp-desktop,10.180.25.59
+comp-desktop,10.180.25.87
 
-user-desktop,10.180.25.86
+user-desktop,10.180.25.119
 
