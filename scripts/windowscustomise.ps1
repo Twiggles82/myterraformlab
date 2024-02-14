@@ -15,7 +15,18 @@ Invoke-WebRequest "https://download.mozilla.org/?product=firefox-latest-ssl&os=w
 Start-Process -FilePath $Path\$Installer -ArgumentList "/silent /install" -Verb RunAs -Wait;
 Remove-Item $Path\$Installer
 
-Invoke-Expression ((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'))
+## Run Ansible for Windows config script
+## reference explicit commit so if moved in repo - still accessible
+#Invoke-Expression ((New-Object System.Net.Webclient).DownloadString("https://raw.githubusercontent.com/ansible/ansible/38e50c9f819a045ea4d40068f83e78adbfaf2e68/examples/scripts/ConfigureRemotingForAnsible.ps1"))
+# Download the script
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/ansible/ansible/38e50c9f819a045ea4d40068f83e78adbfaf2e68/examples/scripts/ConfigureRemotingForAnsible.ps1" -OutFile "ConfigureRemotingForAnsible.ps1"
+
+# Run the script with the -ForceNewSSLCert parameter as we sysprep'ed the host after running packer.
+.\ConfigureRemotingForAnsible.ps1 -ForceNewSSLCert
+
+## Allow basic connections
+winrm set winrm/config/client/auth '@{Basic="true"}'
+winrm set winrm/config/service/auth '@{Basic="true"}'
 
 # # Disable Internet Explorer Enhanced Security Configuration as its annoying. Then again Firefox and Chrome are installed
 # function Disable-InternetExplorerESC {
