@@ -4,11 +4,8 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.5"
     }
-    local = {
-      version = "~> 2.1"
-    }
-    }
   }
+}
 
 # Configure the AWS Provider
 provider "aws" {
@@ -16,25 +13,24 @@ provider "aws" {
 }
 
 module "vpc" {
-  source     = "./modules/vpc"
-
-  vpc_name = var.vpc_name
-  public_subnet_euw1a = var.public_subnet_euw1a
-  public_subnet_euw1b = var.public_subnet_euw1b
-  private_subnet_euw1a = var.private_subnet_euw1a
-  private_subnet_euw1b = var.private_subnet_euw1b
-
-  tf_project_code       = var.tf_project_code
-
-  vpc_cidr = var.vpc_cidr
-  public_subnet_cidr_euw1a = cidrsubnet(var.vpc_cidr, 8, 10)
-  public_subnet_cidr_euw1b = cidrsubnet(var.vpc_cidr, 8, 11)
-  private_subnet_cidr_euw1a = cidrsubnet(var.vpc_cidr, 8, 14)
-  private_subnet_cidr_euw1b = cidrsubnet(var.vpc_cidr, 8, 16)
-
+  source          = "./modules/vpc"
+  
+  vpc_name        = var.vpc_name
+  vpc_cidr        = var.vpc_cidr
+  tf_project_code = var.tf_project_code
+  
+  public_subnet_cidr_euw1a  = cidrsubnet(var.vpc_cidr, 8, 8)
+  public_subnet_cidr_euw1b  = cidrsubnet(var.vpc_cidr, 8, 9)
+  private_subnet_cidr_euw1a  = cidrsubnet(var.vpc_cidr, 8, 10)
+  private_subnet_cidr_euw1b  = cidrsubnet(var.vpc_cidr, 8, 11)
 }
 
-# module "ec2" {
-#   source     = "./modules/ec2"
+module "ec2" {
+  source = "./modules/ec2"
 
-# }
+  tf_project_code = var.tf_project_code
+  desktop_root_ebs_type = var.desktop_root_ebs_type
+  desktop_root_ebs_size = var.desktop_root_ebs_size
+  desktop_ami = var.desktop_ami
+  subnet_id = module.vpc.public_subnet_id_euw1a
+}

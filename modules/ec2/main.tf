@@ -10,37 +10,173 @@ data "template_file" "desktop_prep" {
   }
 }
 
-resource "aws_instance" "desktopred" {
-  associate_public_ip_address = false
-  ami = "${var.usz_desktop_ami}"
-  instance_type = "${var.desktop_instance_type}"
-  availability_zone = "${var.desktop_availability_zone}"
-  key_name = "${var.key_pair}"
-  get_password_data = true
-  iam_instance_profile = "${aws_iam_instance_profile.aws_mgmt_instance_profile.id}"
-  user_data = "${data.template_file.desktop_prep.rendered}"
-  subnet_id = "${aws_subnet.private-subnet-euw2a.id}"
-  ebs_optimized = true
-  root_block_device {
+resource "aws_instance" "jumpserverSG1" {
+   instance_type = "t3.medium"
+     ami = "${var.desktop_ami}"
+     subnet_id = "${var.subnet_id}"
+     key_name = "${var.key_pair}"
+     iam_instance_profile = "${var.ec2_profile}"
+     user_data = file("/user-data-config/PrepServer.ps1")
+     root_block_device {
       encrypted = true
       volume_size = "${var.desktop_root_ebs_size}"
       volume_type = "${var.desktop_root_ebs_type}"
-      }
-  metadata_options { 
-     http_tokens = "required" 
-     http_endpoint = "enabled" 
-  } 
+     }
+         tags = {
+         Name = "jumpserverSG1"
+         DeviceId = "jumpserverSG1"
+     }
+ }
 
-  vpc_security_group_ids = [
-     "${aws_security_group.private-security-group.id}"
-  ]
+# resource "aws_instance" "jenkins" {
+#    instance_type = "t3.medium"
+#      ami = "${data.aws_ami.windowsfilter.id}"
+#      subnet_id = "${aws_subnet.sub-prod-azA-priv.id}"
+#      key_name = "${var.key_pair}"
+#      iam_instance_profile = "${var.ec2_profile}"
+#      user_data = file("./scripts/windowscustomise.ps1")
+#      vpc_security_group_ids = ["${aws_security_group.mgmtad.id}", "${aws_security_group.external-sg.id}","${aws_security_group.private-sg.id}"]
+#          tags = {
+#          Name = "jenkins"
+#          DeviceId = "jenkins"
+#      }
+#  }
 
-  # Add tags:
-  tags = {
-     Name = "${var.tf_project_code}-1z"
-     Zone = "${var.tf_project_code}-2y"
-  }
-}
+# resource "aws_instance" "ad-root" {
+#    instance_type = "t3.medium"
+#      ami = "${data.aws_ami.windowsfilter.id}"
+#      subnet_id = "${aws_subnet.sub-prod-azA-priv.id}"
+#      key_name = "${var.key_pair}"
+#      iam_instance_profile = "${var.ec2_profile}"
+#      user_data = file("./scripts/windowscustomise.ps1")
+#      vpc_security_group_ids = ["${aws_security_group.mgmtad.id}", "${aws_security_group.external-sg.id}","${aws_security_group.private-sg.id}"]
+
+#          tags = {
+#          Name = "ad-root"
+#          DeviceId = "ad-root"
+#      }
+#  }
+
+# resource "aws_instance" "ad-comp" {
+#    instance_type = "t3.medium"
+#      ami = "${data.aws_ami.windowsfilter.id}"
+#      subnet_id = "${aws_subnet.sub-prod-azA-priv.id}"
+#      key_name = "${var.key_pair}"
+#      iam_instance_profile = "${var.ec2_profile}"
+#      user_data = file("./scripts/windowscustomise.ps1")
+#      vpc_security_group_ids = ["${aws_security_group.mgmtad.id}", "${aws_security_group.external-sg.id}","${aws_security_group.private-sg.id}"]
+
+#          tags = {
+#          Name = "ad-comp"
+#          DeviceId = "ad-comp"
+#      }
+#  }
+
+# resource "aws_instance" "ad-user" {
+#    instance_type = "t3.medium"
+#      ami = "${data.aws_ami.windowsfilter.id}"
+#      subnet_id = "${aws_subnet.sub-prod-azA-priv.id}"
+#      key_name = "${var.key_pair}"
+#      iam_instance_profile = "${var.ec2_profile}"
+#      user_data = file("./scripts/windowscustomise.ps1")
+#      vpc_security_group_ids = ["${aws_security_group.mgmtad.id}", "${aws_security_group.external-sg.id}","${aws_security_group.private-sg.id}"]
+
+#          tags = {
+#          Name = "ad-user"
+#          DeviceId = "ad-user"
+#      }
+#  }
+
+# resource "aws_instance" "ca-comp" {
+#    instance_type = "t3.medium"
+#      ami = "${data.aws_ami.windowsfilter.id}"
+#      subnet_id = "${aws_subnet.sub-prod-azA-priv.id}"
+#      key_name = "${var.key_pair}"
+#      iam_instance_profile = "${var.ec2_profile}"
+#      user_data = file("./scripts/windowscustomise.ps1")
+#      vpc_security_group_ids = ["${aws_security_group.mgmtad.id}", "${aws_security_group.external-sg.id}","${aws_security_group.private-sg.id}"]
+
+#          tags = {
+#          Name = "ca-comp"
+#          DeviceId = "ca-comp"
+#      }
+#  }
+
+# resource "aws_instance" "ca-user" {
+#    instance_type = "t3.medium"
+#      ami = "${data.aws_ami.windowsfilter.id}"
+#      subnet_id = "${aws_subnet.sub-prod-azA-priv.id}"
+#      key_name = "${var.key_pair}"
+#      iam_instance_profile = "${var.ec2_profile}"
+#      user_data = file("./scripts/windowscustomise.ps1")
+#      vpc_security_group_ids = ["${aws_security_group.mgmtad.id}", "${aws_security_group.external-sg.id}","${aws_security_group.private-sg.id}"]
+
+#          tags = {
+#          Name = "ca-user"
+#          DeviceId = "ca-user"
+#      }
+#  }
+
+# resource "aws_instance" "ocsp-comp" {
+#    instance_type = "t3.medium"
+#      ami = "${data.aws_ami.windowsfilter.id}"
+#      subnet_id = "${aws_subnet.sub-prod-azA-priv.id}"
+#      key_name = "${var.key_pair}"
+#      iam_instance_profile = "${var.ec2_profile}"
+#      user_data = file("./scripts/windowscustomise.ps1")
+#      vpc_security_group_ids = ["${aws_security_group.mgmtad.id}", "${aws_security_group.external-sg.id}","${aws_security_group.private-sg.id}"]
+
+#          tags = {
+#          Name = "ocsp-comp"
+#          DeviceId = "ocsp-comp"
+#      }
+#  } 
+
+# resource "aws_instance" "ocsp-user" {
+#    instance_type = "t3.medium"
+#      ami = "${data.aws_ami.windowsfilter.id}"
+#      subnet_id = "${aws_subnet.sub-prod-azA-priv.id}"
+#      key_name = "${var.key_pair}"
+#      iam_instance_profile = "${var.ec2_profile}"
+#      user_data = file("./scripts/windowscustomise.ps1")
+#      vpc_security_group_ids = ["${aws_security_group.mgmtad.id}", "${aws_security_group.external-sg.id}","${aws_security_group.private-sg.id}"]
+
+#          tags = {
+#          Name = "ocsp-user"
+#          DeviceId = "ocsp-user"
+#      }
+#  } 
+
+# resource "aws_instance" "comp-desktop" {
+#    instance_type = "t3.medium"
+#      ami = "${data.aws_ami.windowsfilter.id}"
+#      subnet_id = "${aws_subnet.sub-prod-azA-priv.id}"
+#      key_name = "${var.key_pair}"
+#      iam_instance_profile = "${var.ec2_profile}"
+#      user_data = file("./scripts/windowscustomise.ps1")
+#      vpc_security_group_ids = ["${aws_security_group.mgmtad.id}", "${aws_security_group.external-sg.id}","${aws_security_group.private-sg.id}"]
+
+#          tags = {
+#          Name = "comp-desktop"
+#          DeviceId = "comp-desktop"
+#      }
+#  }
+
+# resource "aws_instance" "user-desktop" {
+#    instance_type = "t3.medium"
+#      ami = "${data.aws_ami.windowsfilter.id}"
+#      subnet_id = "${aws_subnet.sub-prod-azA-priv.id}"
+#      key_name = "${var.key_pair}"
+#      iam_instance_profile = "${var.ec2_profile}"
+#      user_data = file("./scripts/windowscustomise.ps1")
+#      vpc_security_group_ids = ["${aws_security_group.mgmtad.id}", "${aws_security_group.external-sg.id}","${aws_security_group.private-sg.id}"]
+
+#          tags = {
+#          Name = "user-desktop"
+#          DeviceId = "user-desktop"
+#      }
+#  }
+
 
 # resource "local_file" "tf-hosts" {
 #   filename = "C:\\repos\\ownrepo\\myterraformlab\\hosts"

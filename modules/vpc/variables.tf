@@ -4,8 +4,8 @@ variable "tf_project_code" {
 }
 
 variable "vpc_name" {
-   description = "The name of the VPC"
-   type = string
+  description = "The name of the VPC"
+  type        = string
 }
 
 variable "vpc_cidr" {
@@ -13,42 +13,22 @@ variable "vpc_cidr" {
   type        = string
 }
 
-variable "private_subnet_euw1a" {
-  description = "Private Subnet for eu-west-1a"
-  type        = string
-}
-
-variable "private_subnet_euw1b" {
-  description = "Private Subnet for eu-west-1b"
-  type        = string
-}
-
-variable "public_subnet_euw1a" {
-  description = "Public Subnet for eu-west-1a"
-  type        = string
-}
-
-variable "public_subnet_euw1b" {
-  description = "Public Subnet for eu-west-1b"
-  type        = string
-}
-
 variable "public_subnet_cidr_euw1a" {
-   description = "CIDR Range for public subnet - EU West 1a"
-   type = string
+  description = "Public Subnet CIDR for eu-west-1a"
+  type        = string
 }
 
 variable "public_subnet_cidr_euw1b" {
-   description = "CIDR Range for public subnet - EU West 1b"
-   type = string
+  description = "Public Subnet CIDR for eu-west-1b"
+  type        = string
 }
 
 variable "private_subnet_cidr_euw1a" {
-   description = "CIDR Range for private subnet - EU West 1a"
-   type = string
+  description = "Private Subnet CIDR for eu-west-1a"
+  type        = string
 }
 
 variable "private_subnet_cidr_euw1b" {
-   description = "CIDR Range for private subnet - EU West 1b"
-   type = string
+  description = "Private Subnet CIDR for eu-west-1b"
+  type        = string
 }

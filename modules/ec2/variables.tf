@@ -3,7 +3,7 @@ variable "tf_project_code" {
   type        = string
 }
 
-variable "usz_desktop_ami" {
+variable "desktop_ami" {
    description = "The AMI Id for the desktop Instance"
    type = string
 }
@@ -46,9 +46,15 @@ variable "desktop_availability_zone" {
 variable "desktop_root_ebs_type" {
    description = "The system drive (C:) type for the Virtual Desktop Instances"
    type = string
+   default = ""
 }
 
 variable "desktop_root_ebs_size" {
    description = "The system drive (C:) size for the Virtual Desktop Instances"
    type = number
+}
+
+variable "subnet_id" {
+  description = "The ID of the subnet where the EC2 instance will be deployed"
+  type        = string
 }

@@ -1,41 +1,36 @@
 variable "tf_project_code" {
   description = "Project Code"
   type        = string
-  default = "SGproject"
+  default     = "SGproject"  # Default value
 }
 
 variable "vpc_name" {
-   description = "The name of the VPC"
-   type = string
-   default = "sgvpc"
+  description = "The name of the VPC"
+  type        = string
+  default     = "sgvpc"      # Default value
 }
 
 variable "vpc_cidr" {
   description = "VPC CIDR Range"
   type        = string
-  default = "10.180.24.0/22"
+  default     = "10.0.0.0/16"  # Default value
 }
 
-variable "private_subnet_euw1a" {
-  description = "Private Subnet for eu-west-1a"
-  type        = string
-  default = "10.180.25.0/25"
+variable "desktop_root_ebs_type" {
+   description = "The system drive (C:) type for the Virtual Desktop Instances"
+   type = string
+   default = "gp3"
 }
 
-variable "private_subnet_euw1b" {
-  description = "Private Subnet for eu-west-1b"
-  type        = string
-  default = "10.180.26.0/25"
+variable "desktop_root_ebs_size" {
+   description = "The system drive (C:) size for the Virtual Desktop Instances"
+   type = number
+   default = "40"
 }
 
-variable "public_subnet_euw1a" {
-  description = "Public Subnet for eu-west-1a"
-  type        = string
-  default = "10.180.25.128/25"
+variable "desktop_ami" {
+   description = "The AMI Id for the desktop Instance"
+   type = string
+   default = "ami-002250a255c73da6e"
 }
 
-variable "public_subnet_euw1b" {
-  description = "Public Subnet for eu-west-1b"
-  type        = string
-  default = "10.180.26.128/25"
-}
